@@ -1,0 +1,83 @@
+<html lang="en">
+  <head>
+    <title>Streamer Tools</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="center">
+      <center>
+        <h1>Login</h1>
+        <iframe src="http://localhost:8080/login"></iframe>
+        <h6>No account? Sign up <a href="http://localhost:8080/signup">here</a></h6>
+      </center>
+    </div>
+
+    <style>
+      iframe{
+        border: none;
+        height: 300px;
+      }
+
+      .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      body{
+        border: 0px;
+        margin: 0px;
+        font-family: sans-serif;
+      }
+
+      .text{
+        outline: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        font-size: 20px;
+      }
+
+      .button {
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 28px;
+        padding: 20px;
+        width: 200px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+      }
+
+      .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+      }
+
+      .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+      }
+
+      .button:hover span {
+        padding-right: 25px;
+      }
+
+      .button:hover span:after {
+        opacity: 1;
+        right: 0;
+      }
+    </style>
+  </body>
+</html>
