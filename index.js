@@ -22,52 +22,60 @@ api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json());
 api.use(bodyParser.raw());
 
+process.on('uncaughtException', err => {
+   console.log('There was an uncaught error', err)
+})
+
 setInterval(async function(){
    var s = require('net').Socket();
-   s.connect(3500, data.qIP);
-   s.on('data', async function(d){
-      let e = JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
-      
-      if(e.details.split(' ')[0] === "Playing"){
-         if(e.details.split(' ')[1] === "multiplayer:"){
-            getJson('https://api.deezer.com/search?q='+e.state.split(' ')[0]).then(data => {
-               data = data.data[0]
+   try{
+      s.connect(3500, data.qIP)
+      s.on('data', async function(d){
+         let e = JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
+         
+         if(e.details.split(' ')[0] === "Playing"){
+            if(e.details.split(' ')[1] === "multiplayer:"){
+               getJson('https://api.deezer.com/search?q='+e.state.split(' ')[0]).then(data => {
+                  data = data.data[0]
 
-               if(e.remaining){
-                  songData.time1 = data.duration - e.remaining
-                  songData.time2 = data.duration
-               } else{
-                  time1 = 0
-                  time2 = 100
-               }
+                  if(e.remaining){
+                     songData.time1 = data.duration - e.remaining
+                     songData.time2 = data.duration
+                  } else{
+                     time1 = 0
+                     time2 = 100
+                  }
 
-               songData.img = data.album.cover_big
-            })
-         } else{
-            getJson('https://api.deezer.com/search?q='+e.details.split(' ')[1]).then(data => {
-               data = data.data[0]
+                  songData.img = data.album.cover_big
+               })
+            } else{
+               getJson('https://api.deezer.com/search?q='+e.details.split(' ')[1]).then(data => {
+                  data = data.data[0]
 
-               if(e.remaining){
-                  songData.time1 = data.duration - e.remaining
-                  songData.time2 = data.duration
-               } else{
-                  time1 = 0
-                  time2 = 100
-               }
+                  if(e.remaining){
+                     songData.time1 = data.duration - e.remaining
+                     songData.time2 = data.duration
+                  } else{
+                     time1 = 0
+                     time2 = 100
+                  }
 
-               songData.img = data.album.cover_big
-            })
+                  songData.img = data.album.cover_big
+               })
+            }
          }
-      }
 
-      if(e.details.details === "In Menu"){
-         songData.img = data.img
-      }
+         if(e.details.details === "In Menu"){
+            songData.img = data.img
+         }
 
-      songData.details = e.details
-      songData.state = e.state
-   });
-   s.end()
+         songData.details = e.details
+         songData.state = e.state
+      });
+      s.end()
+   } catch(e){
+
+   }
 }, 1000)
 
 api.get('/api', async function(req, res){
