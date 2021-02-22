@@ -17,6 +17,12 @@ If you don't have node.js installed
 <img src="https://wiresdev.ga/lts.png">
 3. Complete the setup above!
 
+#Its asking me to login?
+
+1. You need to go to <a href="https://acc.wiresdev.ga">my account page (not finished)</a>
+2. Create an account
+3. Enter the same details in the application
+
 #How do i connect this to my quest?
 
 1. You need the discordRPC mod or you can download <a href="https://wiresdev.ga">this</a> YOU CANNOT HAVE BOTH AT THE SAME TIME!!!!
