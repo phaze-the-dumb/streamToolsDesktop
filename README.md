@@ -32,7 +32,7 @@ If you don't have node.js installed
 # How do i add the displays to obs?
 
 1. Click on the widgets tab on the app
-2. Copy the widget you want
+2. Copy the widget url you want
 3. Add it in obs as a browser source!
 
 # Known Bugs
