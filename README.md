@@ -25,7 +25,7 @@ If you don't have node.js installed
 
 #How do i connect this to my quest?
 
-1. You need the discordRPC mod or you can download <a href="https://wiresdev.ga">this</a> YOU CANNOT HAVE BOTH AT THE SAME TIME!!!!
+1. You need the discordRPC mod or you can download <a href="https://github.com/wiresboy-exe/streamToolsQuest/releases/tag/hello">this</a> YOU CANNOT HAVE BOTH AT THE SAME TIME!!!!
 2. Put your quests ip address on the application
 3. Your connected!!
 
