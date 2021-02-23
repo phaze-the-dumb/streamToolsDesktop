@@ -30,74 +30,6 @@ process.on('uncaughtException', err => {
    console.log('There was an uncaught error', err)
 })
 
-/*let e = {
-   "details":"Multiplayer - In Lobby",
-   "mapDifficulty":"",
-   "mapAuthor":"",
-   "songAuthor":"",
-   "multiplayer": true,
-   "players":"1/5",
-   "state":"",
-   "elapsed":true,
-   "largeImageKey":"image",
-   "smallImageKey":"quest"
-}
-
-if(e.details != "In Menu"){
-   if(e.multiplayer != true){
-      getJson('https://api.deezer.com/search?q='+e.songAuthor+' - '+e.details).then(data => {
-         if(ls != (e.songAuthor+' - '+e.details)){
-            lastSongs.push(songData)
-         }
-
-         ls = e.songAuthor+' - '+e.details
-
-         data = data.data[0]
-
-         if(e.remaining){
-            songData.time1 = e.time
-            songData.time2 = e.endTime
-
-            if(songData.time1 < 0){
-               songData.time1 = 0
-            }
-         } else{
-            time1 = 0
-            time2 = 100
-         }
-
-         songData.img = data.album.cover_big
-      })
-   }
-} else{
-   songData.img = data.img
-}
-
-songData.details = e.details
-songData.state = e.state
-songData.mapAuthor = e.mapAuthor
-songData.mapDifficulty = e.mapDifficulty
-songData.songAuthor = e.songAuthor
-songData.mapAuthor = e.mapAuthor
-
-if(e.multiplayer != true){
-   if(e.details === "Multiplayer - In Lobby"){
-      songData.details = e.details
-      songData.state = e.state
-      songData.mapAuthor = e.mapAuthor
-      songData.mapDifficulty = e.players
-      songData.songAuthor = e.songAuthor
-      songData.mapAuthor = e.mapAuthor
-   } else{
-      songData.details = e.details
-      songData.state = e.state
-      songData.mapAuthor = e.mapAuthor
-      songData.mapDifficulty = e.mapDifficulty
-      songData.songAuthor = e.songAuthor
-      songData.mapAuthor = e.mapAuthor
-   }
-}*/
-
 setInterval(async function(){
    var s = require('net').Socket();
    try{
@@ -112,15 +44,15 @@ setInterval(async function(){
                   if(ls != (e.songAuthor+' - '+e.details)){
                      lastSongs.push(songData)
                   }
-         
+
                   ls = e.songAuthor+' - '+e.details
-         
+
                   data = data.data[0]
-         
+
                   if(e.remaining){
                      songData.time1 = e.time
                      songData.time2 = e.endTime
-         
+
                      if(songData.time1 < 0){
                         songData.time1 = 0
                      }
@@ -128,22 +60,15 @@ setInterval(async function(){
                      time1 = 0
                      time2 = 100
                   }
-         
+
                   songData.img = data.album.cover_big
                })
             }
          } else{
             songData.img = data.img
          }
-         
-         songData.details = e.details
-         songData.state = e.state
-         songData.mapAuthor = e.mapAuthor
-         songData.mapDifficulty = e.mapDifficulty
-         songData.songAuthor = e.songAuthor
-         songData.mapAuthor = e.mapAuthor
-         
-         if(e.multiplayer != true){
+
+         if(e.multiplayer === true){
             if(e.details === "Multiplayer - In Lobby"){
                songData.details = e.details
                songData.state = e.state
@@ -159,6 +84,13 @@ setInterval(async function(){
                songData.songAuthor = e.songAuthor
                songData.mapAuthor = e.mapAuthor
             }
+         } else{
+            songData.details = e.details
+            songData.state = e.state
+            songData.mapAuthor = e.mapAuthor
+            songData.mapDifficulty = e.mapDifficulty
+            songData.songAuthor = e.songAuthor
+            songData.mapAuthor = e.mapAuthor
          }
       });
       s.end()
