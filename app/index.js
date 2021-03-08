@@ -53,7 +53,10 @@ client.on('connected', onConnectedHandler);
 client.connect();
 
 function onMessageHandler (target, context, msg, self) {
-    if (self) { return; }
+   if (self) { return; }
+
+   if(data.username === "SkipLogin")return;
+   if(data.password === "SkipLogin")return;
 
     let commandName = msg.trim();
 
@@ -362,22 +365,26 @@ setInterval(async function(){
             }
          }
 
-         axios.post('https://bs.wiresdev.ga/api/update', {
-            key: key,
-            details: songData.details,
-            img: songData.img,
-            mapAuthor: songData.mapAuthor,
-            mapDifficulty: songData.mapDifficulty,
-            songAuthor: songData.songAuthor,
-            state: songData.state,
-            time1: songData.time1,
-            time2: songData.time2
-         }).then((res) => {
-            
-         }).catch((err) => {
-            console.log(err)
-            console.log('oof')
-         });
+         if(data.username != "SkipLogin"){
+            if(data.password != "SkipLogin"){
+               axios.post('https://bs.wiresdev.ga/api/update', {
+                  key: key,
+                  details: songData.details,
+                  img: songData.img,
+                  mapAuthor: songData.mapAuthor,
+                  mapDifficulty: songData.mapDifficulty,
+                  songAuthor: songData.songAuthor,
+                  state: songData.state,
+                  time1: songData.time1,
+                  time2: songData.time2
+               }).then((res) => {
+                  
+               }).catch((err) => {
+                  console.log(err)
+                  console.log('oof')
+               });
+            }
+         }
       });
       s.end()
    } catch(e){
@@ -461,6 +468,21 @@ app.on("ready", async function(){
       });
    })
 
+   api.get('/skipLogin', async function(req, res){
+      win.loadFile(__dirname + '/views/index.html');
+
+      data.username = 'SkipLogin'
+      data.password = 'SkipLogin'
+
+      let newData = JSON.stringify(data);
+
+      fs.writeFile("./assets/data.json", newData, (err) => {});
+   
+      res.redirect('/main')
+
+      
+   })
+
    api.get('/api/tab.home', async function(req, res){
       win.loadFile(__dirname + '/views/index.html');
    })
@@ -484,17 +506,31 @@ app.on("ready", async function(){
          pass: data.password,
       };
 
-      axios.post('https://acc.wiresdev.ga/api/login', postData)
-         .then((res1) => {
-            if(res1.data.error)return win.loadFile(__dirname + '/views/loginError.html')
+      if(data.username != "SkipLogin"){
+         if(data.password != "SkipLogin"){
+            axios.post('https://acc.wiresdev.ga/api/login', postData)
+               .then((res1) => {
+                  if(res1.data.error)return win.loadFile(__dirname + '/views/loginError.html')
 
+                  res.render(__dirname + '/views/main.ejs', {
+                     data: data,
+                     user: res1.data
+                  })
+               }).catch((err) => {
+                  console.error(err);
+               });
+         } else {
             res.render(__dirname + '/views/main.ejs', {
                data: data,
-               user: res1.data
+               user: {uname: "Guest", discord: {}}
             })
-         }).catch((err) => {
-            console.error(err);
-         });
+         }
+      } else {
+         res.render(__dirname + '/views/main.ejs', {
+            data: data,
+            user: {uname: "Guest", discord: {}}
+         })
+      }
    })
 
    api.get('/user', async function(req, res){
@@ -504,12 +540,20 @@ app.on("ready", async function(){
          pass: data.password,
       };
 
-      axios.post('https://acc.wiresdev.ga/api/login', postData)
-         .then((res1) => {
-            res.json(res1.data)
-         }).catch((err) => {
-            console.log(err);
-         });
+      if(data.username != "SkipLogin"){
+         if(data.password != "SkipLogin"){
+            axios.post('https://acc.wiresdev.ga/api/login', postData)
+               .then((res1) => {
+                  res.json(res1.data)
+               }).catch((err) => {
+                  console.log(err);
+               });
+         } else {
+            res.json({uname: "Guest", discord: {}})
+         }
+      } else {
+         res.json({uname: "Guest", discord: {}})
+      }
    })
    
    api.post('/login', async function(req, res){
@@ -558,26 +602,34 @@ app.on("ready", async function(){
             pass: data.password,
          };
    
-         axios.post('https://acc.wiresdev.ga/api/login', postData)
-            .then((res) => {
+         if(data.username != "SkipLogin"){
+            if(data.password != "SkipLogin"){
+               axios.post('https://acc.wiresdev.ga/api/login', postData)
+                  .then((res) => {
 
-               if(data.key === ""){
-                  axios.post('https://bs.wiresdev.ga/api/add', {name: res.data.uname}).then((res1) => {
-                     key = res1.data.key
-                     data.key = key
+                     if(data.key === ""){
+                        if(data.username != "SkipLogin"){
+                           if(data.password != "SkipLogin"){
+                              axios.post('https://bs.wiresdev.ga/api/add', {name: res.data.uname}).then((res1) => {
+                                 key = res1.data.key
+                                 data.key = key
 
-                     let newData = JSON.stringify(data);
+                                 let newData = JSON.stringify(data);
 
-                     fs.writeFile("./assets/data.json", newData, (err) => {});
+                                 fs.writeFile("./assets/data.json", newData, (err) => {});
+                              }).catch((err) => {
+                                 console.log(err);
+                              });
+                           }
+                        }
+                     }
+
+                     if(res.data.error)return win.loadFile(__dirname + '/views/loginError.hotml')
                   }).catch((err) => {
-                     console.log(err);
+                     console.error(err);
                   });
-               }
-
-               if(res.data.error)return win.loadFile(__dirname + '/views/loginError.hotml')
-            }).catch((err) => {
-               console.error(err);
-            });
+            }
+         }
 
          win.setSize(1000, 600)
 

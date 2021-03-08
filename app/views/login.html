@@ -8,10 +8,26 @@
     <div class="center">
       <center>
         <h1>Login</h1>
-        <iframe src="http://localhost:2078/login"></iframe>
+        <iframe id="login" src="http://localhost:2078/login"></iframe>
+        <div id="rusure"></div>
         <h6>No account? Sign up <a href="http://localhost:2078/signup">here</a></h6>
+        <a href="#" onclick="rusure()">I don't want to login</a>
       </center>
     </div>
+
+    <script>
+      function rusure(){
+        document.getElementById('login').src = ''
+        document.getElementById('login').style.height = 0
+        document.getElementById('rusure').innerHTML = 'Are you sure you don\'t want to login this will disable features like discord syncing and song request manager...<br><button onclick="fetch(`http://localhost:2078/skipLogin`)">Sure</button><button onclick="goback()">No</button>'
+      }
+
+      function goback(){
+        document.getElementById('login').src = 'http://localhost:2078/login'
+        document.getElementById('rusure').innerHTML = ''
+        document.getElementById('login').style.height = 300
+      }
+    </script>
 
     <style>
       iframe{
