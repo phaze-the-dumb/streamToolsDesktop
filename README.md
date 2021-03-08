@@ -17,7 +17,7 @@ If you don't have node.js installed
 
 # How do i connect this to my quest?
 
-1. You need the <a href="https://github.com/EnderdracheLP/streamer-tools">this mod</a>
+1. You need <a href="https://github.com/EnderdracheLP/streamer-tools">this mod</a>
 2. Put your quests ip address on the application
 3. Your connected!!
 
