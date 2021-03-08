@@ -37,8 +37,8 @@ process.on('uncaughtException', err => {
 
 const opts = {
     identity: {
-       username: '',
-       password: ''
+       username: 'BSStreamerTools',
+       password: 'oauth:wpjhnr67ae3x5kdpasv8dfqx6kmkzg'
     },
     channels: [
        data.twitch
