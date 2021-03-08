@@ -27,6 +27,9 @@ If you don't have node.js installed
 2. Copy the widget url you want
 3. Add it in obs as a browser source!
 
+# Change Log
+<a href="https://github.com/wiresboy-exe/streamToolsDesktop/blob/main/changelog.md">here</a>
+
 # Known Bugs
 1. Image is not always the same as in beat saber
 2. Console can get spammed with errors (doesn't break anything tho)
