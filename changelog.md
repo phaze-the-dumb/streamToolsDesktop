@@ -16,6 +16,7 @@
 2. Fixed buggy site 
 3. Fixed "Welcome undefined" text when you skip login
 4. Fixed elements going out of screen
+5. Fixed the bot being on my twitch account
 
 **Removed**
 1. Command start
