@@ -6,8 +6,7 @@ If you don't have node.js installed
 
 1. Go to <a href="https://nodejs.org/">https://nodejs.org/</a>
 2. Download the LTS version
-<img src="https://wiresdev.ga/lts.png">
-3. Complete the setup above!
+3. Complete the node.js setup!
 
 # Its asking me to login?
 
