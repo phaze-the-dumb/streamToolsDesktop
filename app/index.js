@@ -25,6 +25,9 @@ let songData = {
    mapAuthor: "ItzWiresDev#6193",
    time1: 0,
    time2: 0,
+   score: 0,
+   combo: 0,
+   health: [0, 0]
 }
 
 api.use(bodyParser.urlencoded({ extended: true }));
@@ -408,6 +411,24 @@ api.get('/obs', async function(req, res){
 
 api.get('/obs.time', async function(req, res){
    res.render(__dirname + '/views/time.ejs', {
+      data: songData,
+   })
+})
+
+api.get('/obs.combo', async function(req, res){
+   res.render(__dirname + '/views/combo.ejs', {
+      data: songData,
+   })
+})
+
+api.get('/obs.health', async function(req, res){
+   res.render(__dirname + '/views/health.ejs', {
+      data: songData,
+   })
+})
+
+api.get('/obs.score', async function(req, res){
+   res.render(__dirname + '/views/score.ejs', {
       data: songData,
    })
 })

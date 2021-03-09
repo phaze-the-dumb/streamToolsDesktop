@@ -1,0 +1,35 @@
+<style>
+    body{
+        background: #000;
+        color: white;
+        font-family: sans-serif;
+    }
+
+    .container{
+        background: #333;
+        width: 100%;
+        height: 10px;
+        border-radius: 3px;
+    }
+
+    .fill{
+        transition: 5ms;
+        background: white;
+        height: 10px;
+        border-radius: 3px;
+    }
+</style>
+<div>
+    <div class="container">
+        <div id="fill" class="fill">
+
+        </div>
+    </div>
+</div>
+<script>
+    setInterval(function(){
+        fetch('/api').then(res => res.json()).then(res => {
+            document.getElementById('fill').style.width = (res.health[0] / res.health[1]) * 100 + '%'
+        })
+    }, 1000)
+</script>
