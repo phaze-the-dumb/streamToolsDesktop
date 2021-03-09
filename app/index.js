@@ -147,7 +147,6 @@ setInterval(async function(){
             }
 
             if(e.multiplayer != true){
-               ls = e.songAuthor+' - '+e.details
 
                let hash = e.levelID.split('custom_level_').join('')
 
@@ -262,12 +261,6 @@ setInterval(async function(){
                songData.songAuthor = e.songAuthor
                songData.mapAuthor = e.mapAuthor
             } else{
-               if(ls != (e.songAuthor+' - '+e.details)){
-                  lastSongs.push(songData)
-               }
-      
-               ls = e.songAuthor+' - '+e.details
-
                let hash = e.levelID.split('custom_level_').join('')
 
                const options = {
@@ -330,12 +323,6 @@ setInterval(async function(){
                         }
                      } else {
                      getJson('https://api.deezer.com/search?q='+e.songAuthor+' - '+e.details).then(data => {
-                        if(ls != (e.songAuthor+' - '+e.details)){
-                           lastSongs.push(songData)
-                        }
-                        
-                        ls = e.songAuthor+' - '+e.details
-               
                         data = data.data[0]
                
                         if(e.remaining){
