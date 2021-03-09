@@ -141,11 +141,12 @@ setInterval(async function(){
          let e = JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
          
          if(e.details != "In Menu"){
+            if(ls != (e.songAuthor+' - '+e.details)){
+               lastSongs.push(songData)
+               ls = e.songAuthor + ' - ' + e.details
+            }
+
             if(e.multiplayer != true){
-               if(ls != (e.songAuthor+' - '+e.details)){
-                  lastSongs.push(songData)
-               }
-      
                ls = e.songAuthor+' - '+e.details
 
                let hash = e.levelID.split('custom_level_').join('')
