@@ -6,7 +6,8 @@ If you don't have node.js installed
 
 1. Go to <a href="https://nodejs.org/">https://nodejs.org/</a>
 2. Download the LTS version
-3. Complete the node.js setup!
+<img src="https://wiresdev.ga/lts.png">
+3. Complete the setup above!
 
 # Its asking me to login?
 
@@ -25,9 +26,6 @@ If you don't have node.js installed
 1. Click on the widgets tab on the app
 2. Copy the widget url you want
 3. Add it in obs as a browser source!
-
-# Change Log
-<a href="https://github.com/wiresboy-exe/streamToolsDesktop/blob/main/changelog.md">here</a>
 
 # Known Bugs
 1. Image is not always the same as in beat saber

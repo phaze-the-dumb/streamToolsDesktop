@@ -1,14 +1,18 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const api = express();
+const { URL } = require("url");
 const CryptoJS = require("crypto-js");
 const getJson = require('get-json');
 const fetch = require('node-fetch');
 const { app, BrowserWindow } = require("electron");
 const axios = require('axios');
-const https = require('https')
+const https = require('https');
 const fs = require('fs');
 const tmi = require('tmi.js');
+const RPCclient = require('discord-rich-presence')('840608937627746344');
+
+let srm = []
 
 let lastSongs = []
 let ls = ''
@@ -25,6 +29,9 @@ let songData = {
    mapAuthor: "ItzWiresDev#6193",
    time1: 0,
    time2: 0,
+   score: 0,
+   combo: 0,
+   health: [0, 0]
 }
 
 api.use(bodyParser.urlencoded({ extended: true }));
@@ -32,7 +39,7 @@ api.use(bodyParser.json());
 api.use(bodyParser.raw());
 
 process.on('uncaughtException', err => {
-   console.log('oof')
+   console.log(err)
 })
 
 const opts = {
@@ -60,8 +67,6 @@ function onMessageHandler (target, context, msg, self) {
 
     let commandName = msg.trim();
 
-    console.log(commandName)
-
     commandName = commandName.split(' ')
 
     if(commandName[0] === "!bsr"){
@@ -88,7 +93,13 @@ function onMessageHandler (target, context, msg, self) {
                     try {
                         var data1 = JSON.parse(json);
     
-                        fetch('https://bs.wiresdev.ga/api/song.add?hash='+data1.hash+'&name='+data.username)
+                        srm.push({
+                           "img": 'https://beatsaver.com'+data1.coverURL,
+                           "name": data1.metadata.songName,
+                           "mapAuthor": data1.metadata.levelAuthorName,
+                           "songAuthor": data1.metadata.songAuthorName,
+                           "download": data1.directDownload
+                        })
 
                         client.say(target, 'You requested '+data1.metadata.songName+' by '+data1.metadata.songAuthorName)
                     } catch (e) {
@@ -136,14 +147,65 @@ setInterval(async function(){
       s.on('data', async function(d){
          //console.log(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
          let e = JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
-         
+
+         if(e.details === "In Menu"){
+            RPCclient.updatePresence({
+               details: e.details,
+               largeImageKey: 'bsquare',
+               largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+               smallImageKey: 'bsquare',
+               smallImageText: 'Made by ItzWiresDev#6193',
+            });
+         }
+
          if(e.details != "In Menu"){
+            if(ls != (e.songAuthor+' - '+e.details)){
+               lastSongs.push(songData)
+               ls = e.songAuthor + ' - ' + e.details
+            }
+
             if(e.multiplayer != true){
-               if(ls != (e.songAuthor+' - '+e.details)){
-                  lastSongs.push(songData)
+               if(e.mapAuthor === ''){
+                  if(e.mapDifficulty === ''){
+                     RPCclient.updatePresence({
+                        state: e.songAuthor + '..' ,
+                        details: e.details + '..',
+                        largeImageKey: 'bsquare',
+                        largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                        smallImageKey: 'bsquare',
+                        smallImageText: 'Made by ItzWiresDev#6193',
+                     });
+                  } else{
+                     RPCclient.updatePresence({
+                        state: e.songAuthor + '..',
+                        details: e.details + ' (' + e.mapDifficulty + ')',
+                        largeImageKey: 'bsquare',
+                        largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                        smallImageKey: 'bsquare',
+                        smallImageText: 'Made by ItzWiresDev#6193',
+                     });
+                  }
+               } else{
+                  if(e.mapDifficulty === ''){
+                     RPCclient.updatePresence({
+                        state: e.songAuthor + ' [' + e.mapAuthor + ']' ,
+                        details: e.details + '..',
+                        largeImageKey: 'bsquare',
+                        largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                        smallImageKey: 'bsquare',
+                        smallImageText: 'Made by ItzWiresDev#6193',
+                     });
+                  } else{
+                     RPCclient.updatePresence({
+                        state: e.songAuthor + ' [' + e.mapAuthor + ']' ,
+                        details: e.details + ' (' + e.mapDifficulty + ')',
+                        largeImageKey: 'bsquare',
+                        largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                        smallImageKey: 'bsquare',
+                        smallImageText: 'Made by ItzWiresDev#6193',
+                     });
+                  }
                }
-      
-               ls = e.songAuthor+' - '+e.details
 
                let hash = e.levelID.split('custom_level_').join('')
 
@@ -249,6 +311,75 @@ setInterval(async function(){
          songData.mapAuthor = e.mapAuthor
          
          if(e.multiplayer === true){
+            let players = e.players.split('/');
+
+            if(e.mapAuthor === ''){
+               if(e.mapDifficulty === ''){
+                  RPCclient.updatePresence({
+                     state: e.songAuthor + '..' ,
+                     details: e.details + '..',
+                     largeImageKey: 'bsquare',
+                     largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                     smallImageKey: 'bsquare',
+                     smallImageText: 'Made by ItzWiresDev#6193',
+                     partyId: data.twitch,
+                     partySize: parseInt(players[0]),
+                     partyMax: parseInt(players[1]),
+                     matchSecret: data.twitch + 'SECRET',
+                     joinSecret: data.twitch + 'joinSECRET',
+                     spectateSecret: data.twitch + 'spectateSECRET',
+                  });
+               } else{
+                  RPCclient.updatePresence({
+                     state: e.songAuthor + '..',
+                     details: e.details + ' (' + e.mapDifficulty + ')',
+                     largeImageKey: 'bsquare',
+                     largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                     smallImageKey: 'bsquare',
+                     smallImageText: 'Made by ItzWiresDev#6193',
+                     partyId: data.twitch,
+                     partySize: parseInt(players[0]),
+                     partyMax: parseInt(players[1]),
+                     matchSecret: data.twitch + 'SECRET',
+                     joinSecret: data.twitch + 'joinSECRET',
+                     spectateSecret: data.twitch + 'spectateSECRET',
+                  });
+               }
+            } else{
+               if(e.mapDifficulty === ''){
+                  RPCclient.updatePresence({
+                     state: e.songAuthor + ' [' + e.mapAuthor + ']' ,
+                     details: e.details + '..',
+                     largeImageKey: 'bsquare',
+                     largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                     smallImageKey: 'bsquare',
+                     smallImageText: 'Made by ItzWiresDev#6193',
+                     partyId: data.twitch,
+                     partySize: parseInt(players[0]),
+                     partyMax: parseInt(players[1]),
+                     matchSecret: data.twitch + 'SECRET',
+                     joinSecret: data.twitch + 'joinSECRET',
+                     spectateSecret: data.twitch + 'spectateSECRET',
+                  });
+               } else{
+                  RPCclient.updatePresence({
+                     state: e.songAuthor + ' [' + e.mapAuthor + ']' ,
+                     details: e.details + ' (' + e.mapDifficulty + ')',
+                     largeImageKey: 'bsquare',
+                     largeImageText: 'Beat Saber Streamer-Tools (ModVer: 0.1.2, GameVer: 1.15.0)',
+                     smallImageKey: 'bsquare',
+                     smallImageText: 'Made by ItzWiresDev#6193',
+                     partyId: data.twitch,
+                     partySize: parseInt(players[0]),
+                     partyMax: parseInt(players[1]),
+                     matchSecret: data.twitch + 'SECRET',
+                     joinSecret: data.twitch + 'joinSECRET',
+                     spectateSecret: data.twitch + 'spectateSECRET',
+                  });
+               }
+            }
+            
+
             if(e.details === "Multiplayer - In Lobby"){
                songData.img = data.img
                songData.details = e.details
@@ -258,12 +389,6 @@ setInterval(async function(){
                songData.songAuthor = e.songAuthor
                songData.mapAuthor = e.mapAuthor
             } else{
-               if(ls != (e.songAuthor+' - '+e.details)){
-                  lastSongs.push(songData)
-               }
-      
-               ls = e.songAuthor+' - '+e.details
-
                let hash = e.levelID.split('custom_level_').join('')
 
                const options = {
@@ -326,12 +451,6 @@ setInterval(async function(){
                         }
                      } else {
                      getJson('https://api.deezer.com/search?q='+e.songAuthor+' - '+e.details).then(data => {
-                        if(ls != (e.songAuthor+' - '+e.details)){
-                           lastSongs.push(songData)
-                        }
-                        
-                        ls = e.songAuthor+' - '+e.details
-               
                         data = data.data[0]
                
                         if(e.remaining){
@@ -367,7 +486,7 @@ setInterval(async function(){
 
          if(data.username != "SkipLogin"){
             if(data.password != "SkipLogin"){
-               axios.post('https://bs.wiresdev.ga/api/update', {
+               /*axios.post('https://bs.wiresdev.ga/api/update', {
                   key: key,
                   details: songData.details,
                   img: songData.img,
@@ -382,7 +501,7 @@ setInterval(async function(){
                }).catch((err) => {
                   console.log(err)
                   console.log('oof')
-               });
+               });*/
             }
          }
       });
@@ -394,6 +513,10 @@ setInterval(async function(){
 
 api.get('/api', async function(req, res){
    res.json(songData)
+})
+
+api.get('/api/srm', async function(req, res){
+   res.json(srm)
 })
 
 api.get('/lastPlayed', async function(req, res){
@@ -412,6 +535,24 @@ api.get('/obs.time', async function(req, res){
    })
 })
 
+api.get('/obs.combo', async function(req, res){
+   res.render(__dirname + '/views/combo.ejs', {
+      data: songData,
+   })
+})
+
+api.get('/obs.health', async function(req, res){
+   res.render(__dirname + '/views/health.ejs', {
+      data: songData,
+   })
+})
+
+api.get('/obs.score', async function(req, res){
+   res.render(__dirname + '/views/score.ejs', {
+      data: songData,
+   })
+})
+
 api.post('/api.post/qip', async function(req, res){
    data.qIP = req.body.ip
 
@@ -420,6 +561,54 @@ api.post('/api.post/qip', async function(req, res){
    fs.writeFile("./assets/data.json", newData, (err) => {});
 
    res.redirect('/main')
+})
+
+api.get('/api.post/srm', async function(req, res1){
+   const url = new URL('https://api.wiresdev.ga'+req.url);
+   var id = url.searchParams.get('id');
+
+      const options = {
+         hostname: 'beatsaver.com',
+         port: 443,
+         path: '/api/maps/detail/'+id,
+         headers: {
+            'User-Agent': 'Quest-Streamer-Tools/0.1',
+            'Content-Type': 'application/x-www-form-urlencoded',
+         },
+         method: 'GET'
+   }
+
+   https.get(options, function (res) {
+         var json = '';
+   
+         res.on('data', function (chunk) {
+            json += chunk;
+         });
+   
+         res.on('end', function () {
+            if (res.statusCode === 200) {
+               try {
+                     var data1 = JSON.parse(json);
+
+                     srm.push({
+                        "img": 'https://beatsaver.com'+data1.coverURL,
+                        "name": data1.metadata.songName,
+                        "mapAuthor": data1.metadata.levelAuthorName,
+                        "songAuthor": data1.metadata.songAuthorName,
+                        "download": data1.directDownload
+                     })
+                     
+                     res1.redirect('/api/tab.srm')
+               } catch (e) {
+                     console.log('Error parsing JSON!: '+e);
+               };
+            } else {
+               console.log('Status:', res.statusCode);
+            };
+         }).on('error', function (err) {
+            console.log('Error:', err);
+         });
+   });
 })
 
 api.post('/api.post/twitch', async function(req, res){
@@ -587,7 +776,7 @@ app.on("ready", async function(){
    })
 
    //win.setFullScreen(true);
-   win.removeMenu()
+   //win.removeMenu()
    win.setIcon('./assets/icon.png');
 
    win.loadFile(__dirname + '/views/load.html')
@@ -607,7 +796,7 @@ app.on("ready", async function(){
                axios.post('https://acc.wiresdev.ga/api/login', postData)
                   .then((res) => {
 
-                     if(data.key === ""){
+                     /*if(data.key === ""){
                         if(data.username != "SkipLogin"){
                            if(data.password != "SkipLogin"){
                               axios.post('https://bs.wiresdev.ga/api/add', {name: res.data.uname}).then((res1) => {
@@ -622,7 +811,7 @@ app.on("ready", async function(){
                               });
                            }
                         }
-                     }
+                     }*/
 
                      if(res.data.error)return win.loadFile(__dirname + '/views/loginError.hotml')
                   }).catch((err) => {
