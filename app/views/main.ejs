@@ -46,7 +46,11 @@
     </style>
     <script>
       function discord(){
-        document.getElementById('defaultsongimg').value = 'https://cdn.discordapp.com/avatars/<%= user.discord.id %>/<%= user.discord.avatar %>.webp?size=1024'
+        <% if(user.discord){ %>
+          document.getElementById('defaultsongimg').value = 'https://cdn.discordapp.com/avatars/<%= user.discord.id %>/<%= user.discord.avatar %>.webp?size=1024'
+        <% } else{ %>
+          document.getElementById('defaultsongimg').value = 'Discord Not Connected'
+        <% } %>
       }
     </script>
   </body>
