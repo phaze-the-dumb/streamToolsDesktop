@@ -5,20 +5,35 @@
   </head>
   <body>
     <form method="POST" action="/api.post/qip">
-      <center><input name="ip" type="text" class="text" value="<%= data.qIP %>" placeholder="Enter your quests IP"><br>
-      <button class="button" type="submit"><span>Save</span></button></form><style>.center {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}body{border: 0px;margin: 0px;font-family: sans-serif;}.text{outline: none;border-top: none;border-left: none;border-right: none;font-size: 20px;}.button {border-radius: 4px;background-color: rgb(173, 0, 43);border: none;color: #FFFFFF;text-align: center;font-size: 28px;padding: 20px;width: 200px;transition: all 0.5s;cursor: pointer;margin: 5px;}.button span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}.button span:after {position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}.button:hover span {padding-right: 25px;}.button:hover span:after {opacity: 1;right: 0;}</style></center><br><br><br><br>
+      <center>
+        <input name="ip" type="text" class="text" value="<%= data.qIP %>" placeholder="Enter your quests IP"><br><br>
+        <button class="button" type="submit"><span>Save</span></button>
+      </center><br><br><br><br>
     </form>
+
     <form method="POST" action="/api.post/twitch">
       <center><p>You will need to restart the app for twitch commands to take effect</p>
-      <input name="name" type="text" class="text" value="<%= data.twitch %>" placeholder="Enter your twitch name"><br>
-      <button class="button" type="submit"><span>Save</span></button></form><style>.center {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}body{border: 0px;margin: 0px;font-family: sans-serif;}.text{outline: none;border-top: none;border-left: none;border-right: none;font-size: 20px;}.button {border-radius: 4px;background-color: rgb(173, 0, 43);border: none;color: #FFFFFF;text-align: center;font-size: 28px;padding: 20px;width: 200px;transition: all 0.5s;cursor: pointer;margin: 5px;}.button span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}.button span:after {position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}.button:hover span {padding-right: 25px;}.button:hover span:after {opacity: 1;right: 0;}</style></center><br><br><br><br>
+        <input name="name" type="text" class="text" value="<%= data.twitch %>" placeholder="Enter your twitch name"><br><br>
+        <button class="button" type="submit"><span>Save</span></button>
+      </center><br><br><br><br>
     </form>
+
     <form method="POST" action="/api.post/img">
       <center>Default Song Image<br>
-      <a href='#' onclick="discord()">Set to discord profile (you have to link your discord there is a link to do so down below)</a><br> <input name="img" type="text" class="text" id="defaultsongimg" value="<%= data.img %>" placeholder="Default Song Image"><br>
-      <button class="button" type="submit"><span>Save</span></button></form><style>.center {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);}body{border: 0px;margin: 0px;font-family: sans-serif;}.text{outline: none;border-top: none;border-left: none;border-right: none;font-size: 20px;}.button {border-radius: 4px;background-color: rgb(173, 0, 43);border: none;color: #FFFFFF;text-align: center;font-size: 28px;padding: 20px;width: 200px;transition: all 0.5s;cursor: pointer;margin: 5px;}.button span {cursor: pointer;display: inline-block;position: relative;transition: 0.5s;}.button span:after {position: absolute;opacity: 0;top: 0;right: -20px;transition: 0.5s;}.button:hover span {padding-right: 25px;}.button:hover span:after {opacity: 1;right: 0;}</style></center><br><br><br><br>
+        <a href='#' onclick="discord()">Set to discord profile (you have to link your discord there is a link to do so down below)</a><br> <input name="img" type="text" class="text" id="defaultsongimg" value="<%= data.img %>" placeholder="Default Song Image"><br><br>
+        <button class="button" type="submit"><span>Save</span></button>
+      </center><br><br><br><br>
     </form>
+
     <style>
+      button{
+        border: rgb(173, 0, 43) 2px solid;
+        background: rgb(138, 138, 138);
+        padding: 5px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
       a{
         color: #00ccff;
       }

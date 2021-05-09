@@ -648,13 +648,17 @@ app.on("ready", async function(){
    })
 
    api.get('/srm.clear', async function(req, res){
-      axios.post('https://bs.wiresdev.ga/api/srm/clear', {
-         key: key,
-      }).then((data) => {
+      srm = []
+      res.redirect('/api/tab.srm')
+   })
 
-      }).catch((err) => {
-         console.log('oof')
-      });
+   api.get('/srm.rm', async function(req, res){
+      const url = new URL('https://api.wiresdev.ga'+req.url);
+      var song = url.searchParams.get('song');
+
+      srm = srm.filter(x => x.img != song)
+
+      res.redirect('/api/tab.srm')
    })
 
    api.get('/skipLogin', async function(req, res){
@@ -686,6 +690,10 @@ app.on("ready", async function(){
 
    api.get('/api/tab.lastPlayed', async function(req, res){
       win.loadFile(__dirname + '/views/lplayed.html');
+   })
+
+   api.get('/api/tab.download', async function(req, res){
+      win.loadFile(__dirname + '/views/dwnload.html');
    })
 
    api.get('/main', async function(req, res){

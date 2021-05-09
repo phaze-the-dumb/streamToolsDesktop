@@ -7,31 +7,20 @@
     <div class="sidebar">
       <a href="#" onclick="fetch('http://localhost:2078/api/tab.home')">Home</a>
       <a href="#" onclick="fetch('http://localhost:2078/api/tab.widgets')">Widgets</a>
-      <a href="#" onclick="fetch('http://localhost:2078/api/tab.srm')" class="active">SRM</a>
+      <a href="#" onclick="fetch('http://localhost:2078/api/tab.srm')">SRM</a>
     </div>
 
     <div class="content">
       <h1 style="text-align: center;" id="welcomeText"></h1>
       <center>
-        <button onclick="fetch('http://localhost:2078/srm.clear')">Clear</button><br><br><br>
-        <div id="srm"></div><br><br><br><br><br>
+        <button onclick="window.location='https://wiresdev.ga/projects/bs/streamer-tools/download/streamer-tools_v0.1.0.qmod'">Download .QMOD</button>
+        <button onclick="window.location='https://wiresdev.ga/projects/bs/streamer-tools/download/libstreamer-tools.so'">Download .SO</button>
       </center>
     </div>
+
     <script>
       fetch('http://localhost:2078/user').then(res => res.json()).then(res => {
         document.getElementById('welcomeText').innerHTML = 'Welcome '+res.uname
-
-        fetch('http://localhost:2078/api/srm').then(res => res.json()).then(res => {
-          text = ''
-
-          console.log(res)
-
-          res.forEach(song => {
-            text = text + '<img class="img" id="img" src="'+song.img+'" width="50px"><h4 class="txt1" id="sname">'+song.name+'</h4><h5 class="txt2" id="sauthor">'+song.songAuthor+' ['+song.mapAuthor+']</h5><button onclick="window.location=\'https://beatsaver.com'+song.download+'\'">Download</button><button onclick="window.location=\'http://localhost:2078/srm.rm?song='+song.img+'\'">Remove</button><br><br>'
-          })
-
-          document.getElementById('srm').innerHTML = text
-        })
       })
     </script>
     <style>

@@ -12,7 +12,8 @@
 
     <div class="content">
       <h1 style="text-align: center;" id="welcomeText"></h1>
-      <iframe src="http://localhost:2078/main" style="border: none; width: 100%; height: 750px;"></iframe>
+      <p style="text-align: center;"><a href="#" onclick="fetch('http://localhost:2078/api/tab.download')">Download the quest mod!</a></p>
+      <iframe src="http://localhost:2078/main" style="border: none; width: 100%; height: 550px;"></iframe>
       <h5 style="text-align: center;"><a href="#" onclick="window.open('https://acc.wiresdev.ga/discordApp')">Connect your discord</a> or go to https://acc.wiresdev.ga/discordApp</h5>
     </div>
 
@@ -22,6 +23,14 @@
       })
     </script>
     <style>
+      button{
+        border: rgb(173, 0, 43) 2px solid;
+        background: rgb(138, 138, 138);
+        padding: 5px 10px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
       a{
         color: #00ccff;
       }
