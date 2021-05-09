@@ -1,0 +1,35 @@
+<html lang="en">
+  <head>
+    <title>Streamer Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div class="center">
+      <center>
+        <h1>Update Needed</h1>
+        <h4 id="ver"></h4>
+        <a href="https://github.com/wiresboy-exe/streamToolsDesktop/releases">Get the update (https://github.com/wiresboy-exe/streamToolsDesktop/releases)</a>
+      </center>
+    </div>
+
+    <style>
+      .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      body{
+        border: 0px;
+        margin: 0px;
+        font-family: sans-serif;
+      }
+    </style>
+    <script>
+      fetch('http://localhost:2078/api/vers').then(res => res.json()).then(data => {
+        document.getElementById('ver').innerHTML = 'This version VER: '+data.this+' is outdated please download VER: '+data.current
+      })
+    </script>
+  </body>
+</html>

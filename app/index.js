@@ -12,13 +12,20 @@ const fs = require('fs');
 const tmi = require('tmi.js');
 const RPCclient = require('discord-rich-presence')('840608937627746344');
 
+let ver = '0.1.4'
+let updateNeeded = false
+
+fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
+   if(data.current != ver){
+      updateNeeded = true
+   }
+})
+
 let srm = []
 
 let lastSongs = []
 let ls = ''
 let data = require('./assets/data.json');
-
-let key = data.key
 
 let songData = {
    img: data.img,
@@ -611,6 +618,12 @@ api.get('/api.post/srm', async function(req, res1){
    });
 })
 
+api.get('/api/ver', async function(req, res){
+   fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
+      res.json({current: data.current, this: ver})
+   })
+})
+
 api.post('/api.post/twitch', async function(req, res){
    data.twitch = req.body.name
 
@@ -754,7 +767,7 @@ app.on("ready", async function(){
    })
    
    api.post('/login', async function(req, res){
-      var password = CryptoJS.MD5(req.body.pass).toString();
+      var password = CryptoJS.SHA3(req.body.pass).toString();
 
       const postData = {
          appName: 'Beat Saber Streamer Tools',
@@ -821,7 +834,7 @@ app.on("ready", async function(){
                         }
                      }*/
 
-                     if(res.data.error)return win.loadFile(__dirname + '/views/loginError.hotml')
+                     if(res.data.error)return win.loadFile(__dirname + '/views/loginError.html')
                   }).catch((err) => {
                      console.error(err);
                   });
@@ -830,7 +843,11 @@ app.on("ready", async function(){
 
          win.setSize(1000, 600)
 
-         win.loadFile(__dirname + '/views/index.html')
+         if(updateNeeded){
+            win.loadFile(__dirname + '/views/update.html')
+         } else{
+            win.loadFile(__dirname + '/views/index.html')
+         }
       }
    }, 2000)
 })
