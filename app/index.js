@@ -12,7 +12,7 @@ const fs = require('fs');
 const tmi = require('tmi.js');
 const RPCclient = require('discord-rich-presence')('840608937627746344');
 
-let ver = '0.1.4'
+let ver = '0.1.5'
 let updateNeeded = false
 
 fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
