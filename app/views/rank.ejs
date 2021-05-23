@@ -26,7 +26,7 @@
 <script>
     setInterval(function(){
         fetch('/api').then(res => res.json()).then(res => {
-            document.getElementById('fill').innerHTML = res.score
+            document.getElementById('fill').innerHTML = res.rank
             if(!res.rank)document.getElementById('fill').innerHTML = ''
         })
     }, 1000)

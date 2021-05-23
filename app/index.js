@@ -38,7 +38,7 @@ let songData = {
    time2: 0,
    score: 0,
    combo: 0,
-   health: [0, 0]
+   rank: '',
 }
 
 api.use(bodyParser.urlencoded({ extended: true }));
@@ -49,17 +49,9 @@ process.on('uncaughtException', err => {
    console.log(err)
 })
 
-const opts = {
-    identity: {
-       username: 'BSStreamerTools',
-       password: 'oauth:wpjhnr67ae3x5kdpasv8dfqx6kmkzg'
-    },
-    channels: [
-       data.twitch
-    ]
-};
 
-const client = new tmi.client(opts);
+
+/*const client = new tmi.client(opts);
 
 client.on('message', onMessageHandler);
 client.on('connected', onConnectedHandler);
@@ -124,10 +116,10 @@ function onMessageHandler (target, context, msg, self) {
 
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`);
-}
+}*/
 
 
-try{
+/*try{
    const client = new tmi.client(opts);
 
    client.on('message', async function(target, context, msg, self){
@@ -143,14 +135,14 @@ try{
    } 
 } catch(e){
    console.log(e)
-}
+}*/
 
 setInterval(async function(){
    //console.log(key)
 
    var s = require('net').Socket();
    try{
-      s.connect(3501, data.qIP)
+      s.connect(3502, data.qIP)
       s.on('data', async function(d){
          //console.log(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
          let e = JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4))
@@ -316,6 +308,9 @@ setInterval(async function(){
          songData.mapDifficulty = e.mapDifficulty
          songData.songAuthor = e.songAuthor
          songData.mapAuthor = e.mapAuthor
+         songData.combo = e.combo
+         songData.score = e.score
+         songData.rank = e.rank
          
          if(e.multiplayer === true){
             let players = e.players.split('/');
@@ -395,6 +390,9 @@ setInterval(async function(){
                songData.mapDifficulty = e.players
                songData.songAuthor = e.songAuthor
                songData.mapAuthor = e.mapAuthor
+               songData.combo = e.combo
+               songData.score = e.score
+               songData.rank = e.rank
             } else{
                let hash = e.levelID.split('custom_level_').join('')
 
@@ -488,6 +486,9 @@ setInterval(async function(){
                songData.mapDifficulty = e.mapDifficulty
                songData.songAuthor = e.songAuthor
                songData.mapAuthor = e.mapAuthor
+               songData.combo = e.combo
+               songData.score = e.score
+               songData.rank = e.rank
             }
          }
 
@@ -516,10 +517,21 @@ setInterval(async function(){
    } catch(e){
 
    }
-}, 5000)
+}, 2500)
 
 api.get('/api', async function(req, res){
    res.json(songData)
+})
+
+api.get('/api/raw', async function(req, res){
+   var s = require('net').Socket();
+
+   s.connect(3502, '192.168.11.16')
+   s.on('data', async function(d){
+      res.json(JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4)))
+   })
+
+   s.end()
 })
 
 api.get('/api/srm', async function(req, res){
@@ -548,8 +560,8 @@ api.get('/obs.combo', async function(req, res){
    })
 })
 
-api.get('/obs.health', async function(req, res){
-   res.render(__dirname + '/views/health.ejs', {
+api.get('/obs.rank', async function(req, res){
+   res.render(__dirname + '/views/rank.ejs', {
       data: songData,
    })
 })

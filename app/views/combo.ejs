@@ -27,6 +27,7 @@
     setInterval(function(){
         fetch('/api').then(res => res.json()).then(res => {
             document.getElementById('fill').innerHTML = res.combo
+            if(!res.combo)document.getElementById('fill').innerHTML = ''
         })
     }, 1000)
 </script>
