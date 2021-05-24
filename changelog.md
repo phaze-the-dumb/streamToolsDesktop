@@ -1,5 +1,20 @@
 # Change Log
 
+*version PRE-0.1.5*
+
+**Added**
+1. More widgets
+2. Overlays (sort of)
+
+**Fixed**
+1. Multiplayer 
+
+**Removed**
+1. SRM (Will be coming back soon)
+2. Twitch bot (also cming back soon)
+3. Discord presence
+
+
 *version PRE-0.1.0*
 
 **Added**
