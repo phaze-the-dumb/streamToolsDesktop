@@ -10,7 +10,7 @@ const fs = require('fs');
 const axios = require('axios');
 const tmi = require('tmi.js');
 
-let ver = '0.1.5'
+let ver = '0.1.6'
 let updateNeeded = false
 
 fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
