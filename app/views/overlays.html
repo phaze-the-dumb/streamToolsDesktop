@@ -5,31 +5,36 @@
   </head>
   <body>
     <div class="sidebar">
-      <a href="#" onclick="fetch('http://localhost:2078/api/tab.home')" class="active">Home</a>
+      <a href="#" onclick="fetch('http://localhost:2078/api/tab.home')">Home</a>
       <a href="#" onclick="fetch('http://localhost:2078/api/tab.widgets')">Widgets</a>
       <a href="#" onclick="fetch('http://localhost:2078/api/tab.srm')">SRM</a>
-      <a href="#" onclick="fetch('http://localhost:2078/api/tab.overlays')">Overlays</a>
+      <a href="#" class="active" onclick="fetch('http://localhost:2078/api/tab.overlays')">Overlays</a>
     </div>
 
-    <div class="content">
-      <h1 style="text-align: center;" id="welcomeText"></h1>
-      <p style="text-align: center;"><a href="#" onclick="fetch('http://localhost:2078/api/tab.download')">Download the quest mod!</a></p>
-      <iframe src="http://localhost:2078/main" style="border: none; width: 100%; height: 550px;"></iframe>
-      <h5 style="text-align: center;"><a href="#" onclick="window.open('https://acc.wiresdev.ga/discordApp')">Connect your discord</a> or go to https://acc.wiresdev.ga/discordApp</h5>
+    <div class="content" id="hello">
+      <div class="overlay">
+        <h2>Name</h2>
+        <button onclick="window.location = '/overlay.download?id=Name'">Download</button><button onclick="window.open('https://wiresdev.ga/bs/overlays/ComputerElite\'s%20Recreation%20Of%20Overlay%20By%20Reselim.html')">View</button>
+      </div>
     </div>
-
     <script>
-      fetch('http://localhost:2078/user').then(res => res.json()).then(res => {
-        document.getElementById('welcomeText').innerHTML = 'Welcome '+res.uname
+      fetch('https://wiresdev.ga/api/bs/overlays').then(data => data.json()).then(data => {
+        let text = ''
+
+        data.forEach(overlay => {
+          text = text + `<div class="overlay">
+              <h2>`+overlay+`</h2>
+              <button onclick="window.location = '/overlay.download?id=`+encodeURI(overlay)+`'">Download</button><button onclick="window.open(\`https://wiresdev.ga/bs/overlays/`+encodeURI(overlay)+`\`)">View</button>
+            </div>
+          </div>`
+        })
+
+        document.getElementById('hello').innerHTML = text
       })
     </script>
     <style>
-      button{
-        border: rgb(173, 0, 43) 2px solid;
-        background: rgb(138, 138, 138);
-        padding: 5px 10px;
-        border-radius: 10px;
-        cursor: pointer;
+      .overlay{
+        margin: 50px;
       }
 
       a{

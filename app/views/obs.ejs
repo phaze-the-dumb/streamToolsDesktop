@@ -46,21 +46,92 @@
     </div>
 </div>
 <script>
-    setInterval(function(){
-        fetch('/api').then(res => res.json()).then(res => {
-            if(res.details != "In Menu"){
+    let type = ['Easy', 'Normal', 'Hard', 'Expert', 'Expert +']
+
+    fetch('/api').then(res => res.json()).then(res => {
+        if(res.type != 0){
+            document.getElementById('img').src =  res.img
+            document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ')'
+            if(res.mapAuthor === ""){
+                document.getElementById('sauthor').innerHTML =  res.songAuthor
+            } else{
+                document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
+            }
+        } else{
+            if(res.paused){
                 document.getElementById('img').src =  res.img
-                document.getElementById('sname').innerHTML =  res.details + ' (' + res.mapDifficulty + ')'
+                document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ')'
                 if(res.mapAuthor === ""){
                     document.getElementById('sauthor').innerHTML =  res.songAuthor
                 } else{
-                    document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.mapAuthor + ']'
+                    document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
                 }
             } else{
                 document.getElementById('img').src =  res.img
                 document.getElementById('sname').innerHTML =  "In Menu"
                 document.getElementById('sauthor').innerHTML =  ''
             }
+        }
+    })
+
+    setInterval(function(){
+        fetch('/api').then(res => res.json()).then(res => {
+            if(res.type != 0){
+                document.getElementById('img').src =  res.img
+
+                if(res.type === 5){
+                    document.getElementById('sname').innerHTML = 'In Multiplayer Lobby'
+                    document.getElementById('sauthor').innerHTML = res.players + ' out of ' + res.maxPlayers
+                } else{
+                    if(res.type === 2){
+                        document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ') Multiplayer'
+                        if(res.mapAuthor === ""){
+                            document.getElementById('sauthor').innerHTML =  res.songAuthor
+                        } else{
+                            document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
+                        }
+                    } else {
+                        if(res.type === 4){
+                            document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ') Campaign'
+                            if(res.mapAuthor === ""){
+                                document.getElementById('sauthor').innerHTML =  res.songAuthor
+                            } else{
+                                document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
+                            }
+                        } else{
+                            if(res.type === 4){
+                                document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ') Tutorial'
+                                if(res.mapAuthor === ""){
+                                    document.getElementById('sauthor').innerHTML =  res.songAuthor
+                                } else{
+                                    document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
+                                }
+                            } else{
+                                document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ')'
+                                if(res.mapAuthor === ""){
+                                    document.getElementById('sauthor').innerHTML =  res.songAuthor
+                                } else{
+                                    document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
+                                }
+                            }
+                        }
+                    }
+                }
+            } else{
+                if(res.paused){
+                    document.getElementById('img').src =  res.img
+                    document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ')'
+                    if(res.mapAuthor === ""){
+                        document.getElementById('sauthor').innerHTML =  res.songAuthor
+                    } else{
+                        document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
+                    }
+                } else{
+                    document.getElementById('img').src =  res.img
+                    document.getElementById('sname').innerHTML =  "In Menu"
+                    document.getElementById('sauthor').innerHTML =  ''
+                }
+            }
         })
-    }, 1000)
+    }, 100)
 </script>

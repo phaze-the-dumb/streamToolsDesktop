@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const api = express();
 const { URL } = require("url");
 const CryptoJS = require("crypto-js");
-const getJson = require('get-json');
 const fetch = require('node-fetch');
 const { app, BrowserWindow } = require("electron");
 const axios = require('axios');
@@ -27,26 +26,38 @@ let lastSongs = []
 let ls = ''
 let data = require('./assets/data.json');
 
-let songData = {
+/*let songData = {
    img: data.img,
-   details: "We can't connect to your quest",
-   state: "Please enter a valid ip on the app",
-   songAuthor: "Please enter a valid ip on the app",
-   mapDifficulty: "",
-   mapAuthor: "ItzWiresDev#6193",
-   time1: 0,
-   time2: 0,
+   type: 0,
+   isPractice: false,
+   paused: false,
+   time: 0,
+   endTime: 0,
    score: 0,
+   rank: 'S',
    combo: 0,
-   rank: '',
-}
+   energy: 0,
+   accuracy: 0,
+   levelName: '',
+   levelSubName: '',
+   levelAuthor: '',
+   songAuthor: '',
+   id: '',
+   difficulty: 0,
+   bpm: 210,
+   njs: 0,
+   players: 0,
+   maxPlayers: 0
+}*/
+
+let songData = {"img":"https://beatsaver.com/cdn/437d/a5a8a8cb37961d6bf177c3a75310c6c0b127e81a.jpeg","type":0,"isPractice":false,"paused":true,"time":120,"endTime":249,"score":449455,"rank":"A","combo":9,"energy":0.9399999380111694,"accuracy":0.7731645703315735,"levelName":"Wake Me Up","levelSubName":"","levelAuthor":"Uninstaller & Joetastic & SkylerWallace","songAuthor":"Avicii","id":"custom_level_A5A8A8CB37961D6BF177C3A75310C6C0B127E81A","difficulty":4,"bpm":124,"njs":18,"players":0,"maxPlayers":0}
 
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json());
 api.use(bodyParser.raw());
 
 process.on('uncaughtException', err => {
-   console.log(err)
+   //console.log(err)
 })
 
 
@@ -137,6 +148,7 @@ function onConnectedHandler (addr, port) {
    console.log(e)
 }*/
 
+/*
 setInterval(async function(){
    //console.log(key)
 
@@ -509,7 +521,7 @@ setInterval(async function(){
                }).catch((err) => {
                   console.log(err)
                   console.log('oof')
-               });*/
+               })
             }
          }
       });
@@ -517,16 +529,74 @@ setInterval(async function(){
    } catch(e){
 
    }
-}, 2500)
+}, 2500)*/
+
+let lastID = "";
+
+/*setInterval(function(){
+   var s = require('net').Socket();
+
+   s.connect(3502, '192.168.11.16');
+
+   s.on('data', async function(d){
+      let data = JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4));
+
+      let id = data.id.replace('custom_level_', '')
+
+      if(lastID != id){
+         lastID = id
+         fetch('https://beatsaver.com/api/maps/by-hash/'+id, {
+            headers: {
+               'User-Agent': 'Quest-Streamer-Tools/0.1',
+               'Content-Type': 'application/x-www-form-urlencoded',
+            },
+         }).then(data => data.json()).then(data => {
+            console.log('Gotten Image')
+            songData.img = 'https://beatsaver.com' + data.coverURL
+         })
+      }
+
+      songData.type = data.type
+      songData.isPractice = data.isPractice
+      songData.paused = data.paused
+      songData.time = data.time
+      songData.endTime = data.endTime
+      songData.score = data.score
+      songData.rank = data.rank
+      songData.combo = data.combo
+      songData.energy = data.energy
+      songData.accuracy = data.accuracy
+      songData.levelName = data.levelName
+      songData.levelSubName = data.levelSubName
+      songData.levelAuthor = data.levelAuthor
+      songData.songAuthor = data.songAuthor
+      songData.id = data.id
+      songData.difficulty = data.difficulty
+      songData.bpm = data.bpm
+      songData.njs = data.njs
+      songData.players = data.players
+      songData.maxPlayers = data.maxPlayers
+   })
+
+   s.end()
+}, 500)*/
 
 api.get('/api', async function(req, res){
+   res.header('Access-Control-Allow-Origin', '*')
+
    res.json(songData)
 })
 
 api.get('/api/raw', async function(req, res){
+   res.header('Access-Control-Allow-Origin', '*')
+
+   var url = new URL('https://api.wiresdev.ga/' + req.url);
+   let ip = url.searchParams.get('ip');
+   if(ip === null)ip = data.qIP
+
    var s = require('net').Socket();
 
-   s.connect(3502, '192.168.11.16')
+   s.connect(3502, ip)
    s.on('data', async function(d){
       res.json(JSON.parse(d.toString("utf-8", 4, d.readUIntBE(0, 4) + 4)))
    })
@@ -548,8 +618,20 @@ api.get('/obs', async function(req, res){
    })
 })
 
+api.get('/obs.stats', async function(req, res){
+   res.render(__dirname + '/views/stats.ejs', {
+      data: songData,
+   })
+})
+
 api.get('/obs.time', async function(req, res){
    res.render(__dirname + '/views/time.ejs', {
+      data: songData,
+   })
+})
+
+api.get('/obs.energy', async function(req, res){
+   res.render(__dirname + '/views/energy.ejs', {
       data: songData,
    })
 })
@@ -703,6 +785,10 @@ app.on("ready", async function(){
 
    api.get('/api/tab.home', async function(req, res){
       win.loadFile(__dirname + '/views/index.html');
+   })
+
+   api.get('/api/tab.overlays', async function(req, res){
+      win.loadFile(__dirname + '/views/overlays.html');
    })
 
    api.get('/api/tab.widgets', async function(req, res){
