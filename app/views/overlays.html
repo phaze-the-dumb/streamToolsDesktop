@@ -12,24 +12,51 @@
     </div>
 
     <div class="content" id="hello">
-      <div class="overlay">
-        <h2>Name</h2>
-        <button onclick="window.location = '/overlay.download?id=Name'">Download</button><button onclick="window.open('https://wiresdev.ga/bs/overlays/ComputerElite\'s%20Recreation%20Of%20Overlay%20By%20Reselim.html')">View</button>
+      <div id="1">
+
+      </div><hr>
+      <div id="2">
+
       </div>
     </div>
     <script>
-      fetch('https://wiresdev.ga/api/bs/overlays').then(data => data.json()).then(data => {
+      let overlays = []
+
+      fetch('http://localhost:2078/api/overlays').then(data => data.json()).then(data => {
+        overlays = data
         let text = ''
 
-        data.forEach(overlay => {
-          text = text + `<div class="overlay">
+        overlays.forEach(overlay => {
+          text = text + `<div id="`+encodeURI(overlay)+`" class="overlay">
               <h2>`+overlay+`</h2>
-              <button onclick="window.location = '/overlay.download?id=`+encodeURI(overlay)+`'">Download</button><button onclick="window.open(\`https://wiresdev.ga/bs/overlays/`+encodeURI(overlay)+`\`)">View</button>
+              <p style="word-wrap: break-word;">http://localhost:2078/overlay/`+encodeURI(overlay)+`</p>
             </div>
           </div>`
         })
 
-        document.getElementById('hello').innerHTML = text
+        document.getElementById('1').innerHTML = text
+      })
+
+      fetch('https://wiresdev.ga/api/bs/overlays').then(data => data.json()).then(data => {
+        let text = ''
+
+        data.forEach(overlay => {
+          if(!overlays.includes(overlay)){
+            text = text + `<div id="`+encodeURI(overlay)+`" class="overlay">
+                <h2>`+overlay+`</h2>
+                <button onclick="fetch(\`http://localhost:2078/overlay.download?id=`+encodeURI(overlay)+`\`).then(res => {this.innerHTML = 'Update'})">Download</button><button onclick="window.open(\`https://wiresdev.ga/bs/overlays/`+encodeURI(overlay)+`\`)">View</button>
+              </div>
+            </div>`
+          } else{
+            text = text + `<div id="`+encodeURI(overlay)+`" class="overlay">
+                <h2>`+overlay+`</h2>
+                <button onclick="fetch(\`http://localhost:2078/overlay.download?id=`+encodeURI(overlay)+`\`).then(res => {this.innerHTML = 'Update'})">Update</button><button onclick="window.open(\`https://wiresdev.ga/bs/overlays/`+encodeURI(overlay)+`\`)">View</button>
+              </div>
+            </div>`
+          }
+        })
+
+        document.getElementById('2').innerHTML = text
       })
     </script>
     <style>

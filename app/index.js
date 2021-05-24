@@ -5,11 +5,10 @@ const { URL } = require("url");
 const CryptoJS = require("crypto-js");
 const fetch = require('node-fetch');
 const { app, BrowserWindow } = require("electron");
-const axios = require('axios');
 const https = require('https');
 const fs = require('fs');
+const axios = require('axios');
 const tmi = require('tmi.js');
-const RPCclient = require('discord-rich-presence')('840608937627746344');
 
 let ver = '0.1.5'
 let updateNeeded = false
@@ -22,8 +21,6 @@ fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => d
 
 let srm = []
 
-let lastSongs = []
-let ls = ''
 let data = require('./assets/data.json');
 
 let songData = {
@@ -44,13 +41,11 @@ let songData = {
    songAuthor: '',
    id: '',
    difficulty: 0,
-   bpm: 210,
+   bpm: 0,
    njs: 0,
    players: 0,
    maxPlayers: 0
 }
-
-let songData = {"img":"https://beatsaver.com/cdn/437d/a5a8a8cb37961d6bf177c3a75310c6c0b127e81a.jpeg","type":0,"isPractice":false,"paused":true,"time":120,"endTime":249,"score":449455,"rank":"A","combo":9,"energy":0.9399999380111694,"accuracy":0.7731645703315735,"levelName":"Wake Me Up","levelSubName":"","levelAuthor":"Uninstaller & Joetastic & SkylerWallace","songAuthor":"Avicii","id":"custom_level_A5A8A8CB37961D6BF177C3A75310C6C0B127E81A","difficulty":4,"bpm":124,"njs":18,"players":0,"maxPlayers":0}
 
 api.use(bodyParser.urlencoded({ extended: true }));
 api.use(bodyParser.json());
@@ -193,6 +188,8 @@ setInterval(function(){
       songData.njs = data.njs
       songData.players = data.players
       songData.maxPlayers = data.maxPlayers
+
+      console.log(songData)
    })
 
    s.end()
@@ -221,12 +218,23 @@ api.get('/api/raw', async function(req, res){
    s.end()
 })
 
+api.use(function(req, res, next){
+   if(req.url.startsWith('/overlay/')){
+      let file = req.url.replace('/overlay/', '')
+      file = decodeURI(file)
+
+      res.sendFile(__dirname + '/overlays/'+file)
+   } else{
+      next();
+   }
+})
+
 api.get('/api/srm', async function(req, res){
    res.json(srm)
 })
 
-api.get('/lastPlayed', async function(req, res){
-   res.json(lastSongs)
+api.get('/api/ip', async function(req, res){
+   res.json({ip: data.qIP})
 })
 
 api.get('/obs', async function(req, res){
@@ -269,6 +277,37 @@ api.get('/obs.score', async function(req, res){
    res.render(__dirname + '/views/score.ejs', {
       data: songData,
    })
+})
+
+api.get('/api/overlays', async function(req, res){
+   fs.readdir(__dirname + '/overlays', (err, files) => {
+      if (err)
+         console.log(err);
+      else {
+         res.json(files)
+      }
+   }) 
+})
+
+api.get('/overlay.download', async function(req, res){
+   const url = new URL('https://api.wiresdev.ga'+req.url);
+   var id = url.searchParams.get('id');
+    
+   const url1 = 'https://wiresdev.ga/bs/overlays/'+id;
+    
+   axios(url1)
+      .then(response => {
+         const html = response.data;
+
+         fs.writeFile("overlays/"+id, html, (err) => {
+            if (err)
+               console.log(err);
+            else {
+               res.send('ok')
+            }
+         });
+      })
+      .catch(console.error);
 })
 
 api.post('/api.post/qip', async function(req, res){
