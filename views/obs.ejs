@@ -50,7 +50,7 @@
     let img = ''
 
     fetch('/api').then(res => res.json()).then(res => {
-        if(res.type != 0){
+        if(res.location != 0){
             if(res.img != img){
                 document.getElementById('img').src =  res.img
                 res.img
@@ -87,17 +87,17 @@
 
     setInterval(function(){
         fetch('/api').then(res => res.json()).then(res => {
-            if(res.type != 0){
+            if(res.location != 0){
                 if(res.img != img){
                     document.getElementById('img').src =  res.img
                     res.img
                 }
 
-                if(res.type === 5){
+                if(res.location === 5){
                     document.getElementById('sname').innerHTML = 'In Multiplayer Lobby'
                     document.getElementById('sauthor').innerHTML = res.players + ' out of ' + res.maxPlayers
                 } else{
-                    if(res.type === 2){
+                    if(res.location === 2){
                         document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ') Multiplayer'
                         if(res.mapAuthor === ""){
                             document.getElementById('sauthor').innerHTML =  res.songAuthor
@@ -105,7 +105,7 @@
                             document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
                         }
                     } else {
-                        if(res.type === 4){
+                        if(res.location === 4){
                             document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ') Campaign'
                             if(res.mapAuthor === ""){
                                 document.getElementById('sauthor').innerHTML =  res.songAuthor
@@ -113,7 +113,7 @@
                                 document.getElementById('sauthor').innerHTML =  res.songAuthor + ' [' + res.levelAuthor + ']'
                             }
                         } else{
-                            if(res.type === 4){
+                            if(res.location === 4){
                                 document.getElementById('sname').innerHTML =  res.levelName + ' (' + type[res.difficulty] + ') Tutorial'
                                 if(res.mapAuthor === ""){
                                     document.getElementById('sauthor').innerHTML =  res.songAuthor

@@ -2,12 +2,20 @@ const fetch = require('node-fetch');
 const {shell, app, BrowserWindow} = require('electron');
 const express = require('express');
 const { URL } = require("url");
-const axios = require('axios');
 const fs = require('fs');
+const console = require('console');
+
+let plugins = []
 
 const api = express();
 
-console.log(__dirname)
+fs.readdir(__dirname + '/plugins', function(err, files){
+    if(err)return console.error(err)
+
+    files.forEach(file => {
+        plugins.push({name: file, plugin: require('./plugins/'+file)})
+    })
+})
 
 let questIP = ''
 let connected = false
