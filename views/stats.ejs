@@ -1,0 +1,51 @@
+<style>
+    body{
+        background: #000;
+        color: white;
+        font-family: sans-serif;
+    }
+
+    .img{
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    .column {
+        float: left;
+        width: 50%;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .txt2{
+        position: fixed;
+        bottom: 0px;
+        left: 90px;
+    }
+
+    .txt1{
+        position: fixed;
+        bottom: 20px;
+        left: 90px;
+    }
+</style>
+<div id="text">
+    
+</div>
+<script>
+    let type = ['Easy', 'Normal', 'Hard', 'Expert', 'Expert +']
+
+    setInterval(function(){
+        fetch('/api').then(res => res.json()).then(res => {
+            let practice = '';
+            if(res.isPractice)practice = 'Practicing';
+
+            document.getElementById('text').innerHTML =  "NJS: " + res.njs + '<br>BPM: ' + res.bpm + '<br>Accuracy: ' + Math.round(res.accuracy * 100) + '%<br>' + practice;
+        })
+    }, 100)
+</script>

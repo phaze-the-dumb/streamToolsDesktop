@@ -1,0 +1,33 @@
+<style>
+    body{
+        background: #000;
+        color: white;
+        font-family: sans-serif;
+        font-size: 100px;
+    }
+
+    .container{
+        background: #333;
+        width: 100%;
+        height: 10px;
+        border-radius: 3px;
+    }
+
+    .fill{
+        transition: 5ms;
+        background: white;
+        height: 10px;
+        border-radius: 3px;
+    }
+</style>
+<div id="fill">
+    
+</div>
+<script>
+    setInterval(function(){
+        fetch('/api').then(res => res.json()).then(res => {
+            document.getElementById('fill').innerHTML = res.combo
+            if(!res.combo)document.getElementById('fill').innerHTML = ''
+        })
+    }, 1000)
+</script>

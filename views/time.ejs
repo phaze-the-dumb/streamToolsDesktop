@@ -1,0 +1,52 @@
+<style>
+    body{
+        background: #000;
+        color: white;
+        font-family: sans-serif;
+    }
+
+    .container{
+        background: #333;
+        width: 100%;
+        height: 10px;
+        border-radius: 3px;
+    }
+
+    .fill{
+        transition: 5ms;
+        background: white;
+        height: 10px;
+        border-radius: 3px;
+    }
+</style>
+<div>
+    <text id="t1" style="float: left;">time1</text>
+    <text id="t2" style="float: right;">time2</text><br>
+    <div class="container">
+        <div id="fill" class="fill">
+
+        </div>
+    </div>
+</div>
+<script>
+    setInterval(function(){
+        fetch('/api').then(res => res.json()).then(res => {
+            document.getElementById('t1').innerHTML = convert(res.time)
+            document.getElementById('t2').innerHTML = convert(res.endTime)
+            document.getElementById('fill').style.width = (res.time / res.endTime) * 100 + '%'
+        })
+    }, 1000)
+
+    function convert(time){
+        let dateObj = new Date(time * 1000);
+        let hours = dateObj.getUTCHours();
+        let minutes = dateObj.getUTCMinutes();
+        let seconds = dateObj.getSeconds();
+
+        let timeString = hours.toString().padStart(2, '0') + ':' + 
+            minutes.toString().padStart(2, '0') + ':' + 
+            seconds.toString().padStart(2, '0');
+
+        return timeString;
+    }
+</script>
