@@ -7,6 +7,8 @@ const fs = require('fs');
 
 const api = express();
 
+console.log(__dirname)
+
 let questIP = ''
 let connected = false
 let befconnected = false
@@ -123,22 +125,23 @@ function createWindow () {
         }
     })
 
-    win.setIcon('./assets/icon.png');
+    win.removeMenu();
+    win.setIcon(__dirname + '/assets/icon.png');
 
     api.get('/api/tab.home', async function(req, res){
-        win.loadFile(__dirname + '/views/index.html');
+        win.loadFile('views/index.html');
     })
     
     api.get('/api/tab.overlays', async function(req, res){
-        win.loadFile(__dirname + '/views/overlays.html');
+        win.loadFile('views/overlays.html');
     })
     
     api.get('/api/tab.widgets', async function(req, res){
-        win.loadFile(__dirname + '/views/wid.html');
+        win.loadFile('views/wid.html');
     })
     
     api.get('/api/tab.download', async function(req, res){
-        win.loadFile(__dirname + '/views/dwnload.html');
+        win.loadFile('views/dwnload.html');
     })
 
     fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
@@ -151,7 +154,7 @@ function createWindow () {
             
                     if(befconnected != connected){
                         win.setSize(1000, 600)
-                        win.loadFile(__dirname + '/views/index.html')
+                        win.loadFile('views/index.html')
                         befconnected = connected
                     }
                     songData = data
@@ -173,13 +176,13 @@ function createWindow () {
 
         if(updateNeeded === false){
             if(connected === false){
-                win.loadFile(__dirname + '/views/load.html')
+                win.loadFile('views/load.html');
             } else{
                 win.setSize(1000, 600)
-                win.loadFile(__dirname + '/views/index.html')
+                win.loadFile('views/index.html');
             }
         } else{
-            win.loadFile(__dirname + '/views/update.html')
+            win.loadFile('views/update.html');
         }
     })
 }
