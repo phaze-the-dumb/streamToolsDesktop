@@ -1,6 +1,0 @@
-Run Install.bat
-
-this should create a files called StreamerTools.bat
-
-wait for npm to install all scripts when it has run the StreamerTools.bat file,
-this should open command prompt then open a window this is your streamer tools dashboard!
