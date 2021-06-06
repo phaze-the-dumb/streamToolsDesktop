@@ -2,6 +2,12 @@
 
 YOU NEED NODE.JS INSTALLED!!
 
+If you have nodejs installed
+
+Go to the releases page ( https://github.com/wiresboy-exe/streamToolsDesktop/releases )
+Download the version for your OS and unzip it
+Find the run file (should be `StreamerTools.exe` file extention may change depending on os)
+
 If you don't have node.js installed
 
 1. Go to <a href="https://nodejs.org/">https://nodejs.org/</a>
@@ -9,14 +15,10 @@ If you don't have node.js installed
 3. Complete the setup above!
 
 # Its asking me to login?
-
 Your running an older version.
 
 # How do i connect this to my quest?
-
-1. You need <a href="https://github.com/EnderdracheLP/streamer-tools">this mod</a>
-2. Put your quests ip address on the application
-3. Your connected!!
+Should automoatically connect
 
 # How do i add the displays to obs?
 
