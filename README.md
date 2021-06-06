@@ -10,9 +10,7 @@ If you don't have node.js installed
 
 # Its asking me to login?
 
-1. You need to go to <a href="https://acc.wiresdev.ga">my account page (not finished)</a>
-2. Create an account
-3. Enter the same details in the application
+Your running an older version.
 
 # How do i connect this to my quest?
 
