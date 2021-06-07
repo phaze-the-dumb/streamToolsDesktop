@@ -20,7 +20,7 @@ fs.readdir(__dirname + '/plugins', function(err, files){
 let questIP = ''
 let connected = false
 let befconnected = false
-let ver = '0.2.1'
+let ver = '0.2.2'
 let updateNeeded = false
 
 let songData = {}

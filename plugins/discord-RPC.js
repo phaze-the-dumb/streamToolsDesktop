@@ -2,6 +2,7 @@ const console = require('console');
 const RPC = require('discord-rpc');
 const fetch = require('node-fetch');
 
+let startTime = new Date()
 let client = new RPC.Client({ transport: 'ipc' });
 let type = ['Easy', 'Normal', 'Hard', 'Expert', 'Expert +']
 
@@ -69,18 +70,32 @@ client.on('ready', () => {
                 }
             }
 
-            client.setActivity({
-                details: details,
-                state: state,
-                largeImageKey: 'bsquare',
-                smallImageKey: 'bsquare',
-                largeImageText: 'StreamerTools Quest',
-                smallImageText: 'Made by ItzWiresDev#6193',
-                startTimestamp: new Date(),
-                buttons: [
-                    { label: 'Get BeatSaber Streamer Tools', url: 'https://github.com/wiresboy-exe/streamToolsDesktop' }
-                ]
-            })
+            if(details != ''){
+                client.setActivity({
+                    details: details,
+                    state: state,
+                    largeImageKey: 'bsquare',
+                    smallImageKey: 'bsquare',
+                    largeImageText: 'StreamerTools Quest',
+                    smallImageText: 'Made by ItzWiresDev#6193',
+                    startTimestamp: startTime,
+                    buttons: [
+                        { label: 'Get BeatSaber Streamer Tools', url: 'https://github.com/wiresboy-exe/streamToolsDesktop' }
+                    ]
+                })
+            } else{
+                client.setActivity({
+                    state: state,
+                    largeImageKey: 'bsquare',
+                    smallImageKey: 'bsquare',
+                    largeImageText: 'StreamerTools Quest',
+                    smallImageText: 'Made by ItzWiresDev#6193',
+                    startTimestamp: startTime,
+                    buttons: [
+                        { label: 'Get BeatSaber Streamer Tools', url: 'https://github.com/wiresboy-exe/streamToolsDesktop' }
+                    ]
+                })
+            }
     
             slide++
         })
