@@ -5,7 +5,9 @@ YOU NEED NODE.JS INSTALLED!!
 If you have nodejs installed
 
 Go to the releases page ( https://github.com/wiresboy-exe/streamToolsDesktop/releases )
+
 Download the version for your OS and unzip it
+
 Find the run file (should be `StreamerTools.exe` file extention may change depending on os)
 
 If you don't have node.js installed
