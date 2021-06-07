@@ -20,7 +20,7 @@ If you don't have node.js installed
 Your running an older version.
 
 # How do i connect this to my quest?
-Should automoatically connect
+Should automatically connect
 
 # How do i add the displays to obs?
 
@@ -28,8 +28,11 @@ Should automoatically connect
 2. Copy the widget url you want
 3. Add it in obs as a browser source!
 
+You can also use overlays..
+
+(overlay maker in the works!)
+
 # Known Bugs
-1. Image is not always the same as in beat saber
-2. Console can get spammed with errors (doesn't break anything tho)
+...
 
 If you need help please contact `ItzWiresDev#6193`
