@@ -32,9 +32,7 @@ api.get('/api', async function(req, res){
 })
 
 api.get('/api/ver', async function(req, res){
-    fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
-       res.json({current: data.current, this: ver})
-    })
+    res.json({current: ver, this: ver})
 })
 
 api.get('/api/raw', async function(req, res){
@@ -152,12 +150,12 @@ function createWindow () {
         win.loadFile('views/dwnload.html');
     })
 
-    fetch('https://wiresdev.ga/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
+    fetch('https://phazed.xyz/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
         if(data.current != ver){
             updateNeeded = true
         } else{
             setInterval(function(){
-                fetch('http://'+questIP).then(data => data.json()).then(data => {
+                fetch('http://'+questIP+'/data').then(data => data.json()).then(data => {
                     connected = true
             
                     if(befconnected != connected){
@@ -167,6 +165,7 @@ function createWindow () {
                     }
                     songData = data
                     songData.connected = true
+
                     fetch('http://'+questIP+'/cover/base64').then(data => data.text()).then(data => {
                         songData.img = data
                         connected = true
@@ -176,6 +175,7 @@ function createWindow () {
                         songData.connected = false
                     })
                 }).catch(e => {
+                    console.log(e)
                     connected = false
                     songData.connected = false
                 })
