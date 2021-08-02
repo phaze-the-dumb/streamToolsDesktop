@@ -22,8 +22,4 @@ Should automatically connect
 
 You can also use overlays..
 
-
-# Known Bugs
-...
-
 If you need help please contact `Phaze#6193`
