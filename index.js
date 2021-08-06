@@ -24,11 +24,47 @@ let ver = '0.2.2'
 let updateNeeded = false
 
 let songData = {}
+let posData = {}
+
+setInterval(() => {
+    if(connected === true){
+        if(songData.location != 0){
+            if(songData.time <= (songData.endTime - 2)){
+                //console.log('ping', songData.location, Math.random())
+                //fetch('http://'+questIP+'/positions').then(data => data.json()).then(data => {
+                //    posData = data
+                //}).catch(e => {
+                //    
+                //})
+            }
+        } else{
+            songData.img = 'https://phazed.xyz/beatsaber.jpg'
+        }
+    }
+}, 50)
+
+api.use('/three', express.static('node_modules/three'))
 
 api.get('/api', async function(req, res){
     res.header('Access-Control-Allow-Origin', '*')
  
     res.json(songData)
+})
+
+api.get('/api/pos', (req, res) => {
+    res.json(posData)
+})
+
+api.get('/avatar', (req, res) => {
+    res.sendFile(__dirname + '/avatar.html')
+})
+
+api.get('/js/three.js', (req, res) => {
+    res.sendFile(__dirname + '/assets/three.js')
+})
+
+api.get('/js/modelLoader.js', (req, res) => {
+    res.sendFile(__dirname + '/assets/modelLoader.js')
 })
 
 api.get('/api/ver', async function(req, res){
@@ -111,9 +147,9 @@ api.use(function(req, res, next){
     if(req.url.startsWith('/overlay/')){
         let file = req.url.replace('/overlay/', '')
         fs.readdir(__dirname + '/overlays', (err, files) => {
-            if (err)
-                console.log(err);
-            else {
+            if (err){
+                //console.log(err);
+            } else {
                 res.sendFile(__dirname + '/overlays/'+files[file])
             }
         }) 
@@ -175,7 +211,7 @@ function createWindow () {
                         songData.connected = false
                     })
                 }).catch(e => {
-                    console.log(e)
+                    //console.log(e)
                     connected = false
                     songData.connected = false
                 })
@@ -227,7 +263,7 @@ function SetupMulticast(localIP) {
     });
 
     client.on('message', function (message, remote) {   
-        console.log(message.toString())
+        //console.log(message.toString())
         questIP = JSON.parse(message).HTTP
         ipInQueue = remote.address;
     });
@@ -245,7 +281,7 @@ function GetLocalIPs() {                    // This will get the IPs of all netw
             // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
             if (net.family === 'IPv4' && !net.internal) {
                 results.push(net.address);
-                console.log("adding " + net.address)
+                //console.log("adding " + net.address)
             }
         }
     }

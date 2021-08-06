@@ -7,15 +7,16 @@
   "devDependencies": {
     "@electron-forge/cli": "*",
     "electron": "^13.1.0",
-    "electron-packager": "^15.3.0",
-    "electron-builder": "^22.11.7"
+    "electron-builder": "^22.11.7",
+    "electron-packager": "^15.3.0"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "discord-rpc": "^3.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "three": "^0.131.1"
   },
   "name": "streamer-tools",
   "version": "1.0.0",

@@ -20,14 +20,14 @@
     </div>
     <script>
 
-      fetch('https://wiresdev.ga/api/bs/overlays').then(data => data.json()).then(data => {
+      fetch('https://phazed.xyz/api/bs/overlays').then(data => data.json()).then(data => {
         let text = ''
 
         data.forEach(overlay => {
           text = text + `<div id="`+encodeURI(overlay)+`" class="overlay">
               <h2>`+overlay.replace('.html', '')+`</h2>
-              <button onclick="copy(\`https://wiresdev.ga/bs/overlays/`+encodeURI(overlay)+`\`)">Copy URL</button>
-              <button onclick="window.open(\`https://wiresdev.ga/bs/overlays/`+encodeURI(overlay)+`\`)">View</button>
+              <button onclick="copy(\`https://phazed.xyz/bs/overlays/`+encodeURI(overlay)+`\`)">Copy URL</button>
+              <button onclick="fetch('http://localhost:2078/open?Url=https://phazed.xyz/bs/overlays/`+encodeURI(overlay)+`')">View</button>
             </div>
           </div>`
         })
