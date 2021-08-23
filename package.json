@@ -23,7 +23,7 @@
   "main": "index.js",
   "author": "Phaze#6193 (phazed.xyz)",
   "license": "ISC",
-  "description": "",
+  "description": "Streamer Tools",
   "build": {
     "appId": "streamer-tools"
   }

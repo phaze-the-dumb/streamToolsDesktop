@@ -186,49 +186,34 @@ function createWindow () {
         win.loadFile('views/dwnload.html');
     })
 
-    fetch('https://phazed.xyz/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
-        if(data.current != ver){
-            updateNeeded = true
-        } else{
-            setInterval(function(){
-                fetch('http://'+questIP+'/data').then(data => data.json()).then(data => {
-                    connected = true
-            
-                    if(befconnected != connected){
-                        win.setSize(1000, 600)
-                        win.loadFile('views/index.html')
-                        befconnected = connected
-                    }
-                    songData = data
-                    songData.connected = true
+    //fetch('https://phazed.xyz/projects/bs/streamer-tools/vers.json').then(data => data.json()).then(data => {
+        setInterval(function(){
+            fetch('http://'+questIP+'/data').then(data => data.json()).then(data => {
+                connected = true
+        
+                if(befconnected != connected){
+                    win.setSize(1000, 600)
+                    win.loadFile('views/index.html')
+                    befconnected = connected
+                }
+                songData = data
+                songData.connected = true
 
-                    fetch('http://'+questIP+'/cover/base64').then(data => data.text()).then(data => {
-                        songData.img = data
-                        connected = true
-                        songData.connected = true
-                    }).catch(e => {
-                        connected = false 
-                        songData.connected = false
-                    })
+                fetch('http://'+questIP+'/cover/base64').then(data => data.text()).then(data => {
+                    songData.img = data
+                    connected = true
+                    songData.connected = true
                 }).catch(e => {
-                    //console.log(e)
-                    connected = false
+                    connected = false 
                     songData.connected = false
                 })
-            }, 500)
-        }
-
-        if(updateNeeded === false){
-            if(connected === false){
-                win.loadFile('views/load.html');
-            } else{
-                win.setSize(1000, 600)
-                win.loadFile('views/index.html');
-            }
-        } else{
-            win.loadFile('views/update.html');
-        }
-    })
+            }).catch(e => {
+                //console.log(e)
+                connected = false
+                songData.connected = false
+            })
+        }, 500)
+    //})
 }
 
 app.whenReady().then(() => {
